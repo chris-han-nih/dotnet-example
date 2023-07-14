@@ -1,9 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using mock_ef.data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<MockDbContext>(options =>
+                                                   options.UseNpgsql(builder.Configuration.GetConnectionString("MockDbConnection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

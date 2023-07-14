@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "queue-background-worker", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mock-ef", "..\mock-ef\mock-ef.csproj", "{8B24FC26-99F8-4730-89F7-81254EDBC378}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mock-ef-test", "..\mock-ef-test\mock-ef-test.csproj", "{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,5 +88,17 @@ Global
 		{8B24FC26-99F8-4730-89F7-81254EDBC378}.Release|x64.Build.0 = Release|Any CPU
 		{8B24FC26-99F8-4730-89F7-81254EDBC378}.Release|x86.ActiveCfg = Release|Any CPU
 		{8B24FC26-99F8-4730-89F7-81254EDBC378}.Release|x86.Build.0 = Release|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Debug|x64.Build.0 = Debug|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Debug|x86.Build.0 = Debug|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Release|x64.ActiveCfg = Release|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Release|x64.Build.0 = Release|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Release|x86.ActiveCfg = Release|Any CPU
+		{DEDFBD7D-EAEB-46FD-ABCA-EBF7B258DE4B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
