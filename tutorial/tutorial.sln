@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scoped-processing-service",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "queue-background-worker", "..\queue-background-worker\queue-background-worker.csproj", "{24948FF4-3739-43A7-9AF0-244566BBB289}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logging", "..\logging\logging.csproj", "{6B4160DE-0C4E-4F81-B976-C553E0AB104B}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +74,17 @@ Global
 		{24948FF4-3739-43A7-9AF0-244566BBB289}.Release|x64.Build.0 = Release|Any CPU
 		{24948FF4-3739-43A7-9AF0-244566BBB289}.Release|x86.ActiveCfg = Release|Any CPU
 		{24948FF4-3739-43A7-9AF0-244566BBB289}.Release|x86.Build.0 = Release|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Release|x64.Build.0 = Release|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6B4160DE-0C4E-4F81-B976-C553E0AB104B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
