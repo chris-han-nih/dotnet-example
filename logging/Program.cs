@@ -30,6 +30,8 @@ var logger = new LoggerConfiguration()
              // https://github.com/serilog-contrib/Serilog.Enrichers.Sensitive/blob/master/README.md
              // https://benfoster.io/blog/serilog-best-practices/
              // https://nblumhardt.com/2021/06/customize-serilog-json-output/
+             // https://www.c-sharpcorner.com/article/logging-and-tracing-in-multiple-microservice-with-correlation-using-net-core/
+             // correlationId https://mderriey.com/2016/11/18/correlation-id-with-asp-net-web-api/
             // .Enrich.WithSensitiveDataMasking()
             .Enrich.FromLogContext()
             // .Destructure.ByMaskingProperties("password", "Password", "PASSWORD", "token", "Token", "TOKEN")
