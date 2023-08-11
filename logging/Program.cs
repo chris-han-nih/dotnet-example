@@ -1,4 +1,5 @@
 using logging.Middlewares;
+using Masking.Serilog;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,8 @@ builder.Services.AddHeaderPropagation(options =>
                                       });
 var logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
+            .Enrich.WithProperty("Application", "Payment")
+            .Enrich.With(new RemovePropertiesEnricher())
              // https://github.com/serilog-contrib/Serilog.Enrichers.Sensitive
              // https://github.com/serilog-contrib/Serilog.Enrichers.Sensitive/blob/master/README.md
              // https://benfoster.io/blog/serilog-best-practices/
@@ -34,7 +37,7 @@ var logger = new LoggerConfiguration()
              // correlationId https://mderriey.com/2016/11/18/correlation-id-with-asp-net-web-api/
             // .Enrich.WithSensitiveDataMasking()
             .Enrich.FromLogContext()
-            // .Destructure.ByMaskingProperties("password", "Password", "PASSWORD", "token", "Token", "TOKEN")
+            .Destructure.ByMaskingProperties("password", "Password", "PASSWORD", "token", "Token", "TOKEN")
             .CreateLogger();
 builder.Logging.ClearProviders();
 builder.Services.AddSerilog(logger);
@@ -51,6 +54,7 @@ app.UseHeaderPropagation();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+// app.UserSerilogRequestLogging();
 
 app.MapControllers();
 app.UseMiddleware<LoggingMiddleware>();
