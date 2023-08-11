@@ -1,6 +1,7 @@
 namespace logging.Middlewares;
 
 using System.Buffers;
+using System.Text.Json;
 
 public class LoggingMiddleware
 {
@@ -27,16 +28,20 @@ public class LoggingMiddleware
         var statusCode = context.Response.StatusCode;
         var responseBody = await ReadBody.GetResponseBody(memoryBodyStream);
         context.Response.Body = originalBody;
-        
+
         if (statusCode >= 500)
         {
             _logger.LogCritical("{Body}", responseBody);
-            context.Response.BodyWriter.Write("Internal server error!"u8);
-        }
-        if (statusCode >= 400)
-        {
-            _logger.LogWarning("{Body}", responseBody);
-            context.Response.BodyWriter.Write("Something went wrong!"u8);
+            var dict = await JsonSerializer.DeserializeAsync<IDictionary<string, object>>(memoryBodyStream);
+
+            var code = "500";
+            if (dict is not null && 
+                dict.TryGetValue("code", out var _code) && string.IsNullOrWhiteSpace(_code.ToString()))
+            {
+                code = _code.ToString();
+            }
+            var body = new {Code = code, Message = "Internal server error!"};
+            context.Response.BodyWriter.Write(JsonSerializer.SerializeToUtf8Bytes(body));
         }
         else
         {
