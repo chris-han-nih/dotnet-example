@@ -36,7 +36,7 @@ public class LoggingMiddleware
 
             var code = "500";
             if (dict is not null && 
-                dict.TryGetValue("code", out var _code) && string.IsNullOrWhiteSpace(_code.ToString()))
+                dict.TryGetValue("code", out var _code))
             {
                 code = _code.ToString();
             }
