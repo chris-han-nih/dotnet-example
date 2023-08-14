@@ -37,7 +37,7 @@ public sealed class NsusJsonFormatter : ITextFormatter
     /// <param name="logEvent">The event to format.</param>
     /// <param name="output">The output.</param>
     /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue"/>s on the event.</param>
-    public static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
+    private static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
     {
         if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
         if (output == null) throw new ArgumentNullException(nameof(output));
