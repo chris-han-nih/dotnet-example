@@ -7,46 +7,50 @@ public class LoggingMiddleware
 {
     private readonly ILogger _logger;
     private readonly RequestDelegate _next;
-    
+
     public LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> logger)
     {
         _next = next;
-        _logger = logger;    
+        _logger = logger;
     }
-    
+
     public async Task Invoke(HttpContext context)
     {
         var originalBody = context.Response.Body;
         var memoryBodyStream = new MemoryStream();
         context.Response.Body = memoryBodyStream;
+
+        await LoggingRequestAsync(context.Request);
         
-        var requestBody = await ReadBody.GetRequestBody(context.Request);
-        _logger.LogInformation("{Body}", requestBody);
-
         await _next.Invoke(context);
+        
+        await LoggingResponseAsync(context.Response, memoryBodyStream);
+        
+        await memoryBodyStream.CopyToAsync(originalBody);
+    }
 
-        var statusCode = context.Response.StatusCode;
-        var responseBody = await ReadBody.GetResponseBody(memoryBodyStream);
-        context.Response.Body = originalBody;
+    private async Task LoggingRequestAsync(HttpRequest request)
+    {
+        if (!_logger.IsEnabled(LogLevel.Information)) return;
 
-        if (statusCode >= 500)
-        {
-            _logger.LogCritical("{Body}", responseBody);
-            var dict = await JsonSerializer.DeserializeAsync<IDictionary<string, object>>(memoryBodyStream);
+        var queryString = request.QueryString;
+        _logger.LogInformation("{QueryString}", queryString);
 
-            var code = "500";
-            if (dict is not null && 
-                dict.TryGetValue("code", out var _code))
-            {
-                code = _code.ToString();
-            }
-            var body = new {Code = code, Message = "Internal server error!"};
-            context.Response.BodyWriter.Write(JsonSerializer.SerializeToUtf8Bytes(body));
-        }
-        else
-        {
-            await memoryBodyStream.CopyToAsync(originalBody);
-            _logger.LogInformation("{Body}", responseBody);
-        }
+        var body = await ReadBody.GetRequestBodyAsync(request);
+        if (string.IsNullOrEmpty(body)) return;
+
+        _logger.LogInformation("{Body}", body);
+        
+        if (!_logger.IsEnabled(LogLevel.Debug)) return;
+        _logger.LogDebug("{Headers}", request.Headers);
+    }
+
+    private async Task LoggingResponseAsync(HttpResponse response, MemoryStream responseBodyStream)
+    {
+        var statusCode = response.StatusCode;
+        var body = await ReadBody.GetResponseBodyAsync(responseBodyStream);
+
+        _logger.LogInformation("{StatusCode}", statusCode);
+        _logger.LogInformation("{Body}", body);
     }
 }
