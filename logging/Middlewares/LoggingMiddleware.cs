@@ -1,9 +1,5 @@
 namespace logging.Middlewares;
 
-using System.Buffers;
-using System.Text.Json;
-using Serilog.Events;
-
 public class LoggingMiddleware
 {
     private readonly ILogger _logger;
