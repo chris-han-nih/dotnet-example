@@ -1,3 +1,5 @@
+using Serilog.Events;
+
 namespace logging.Middlewares;
 
 public class LoggingMiddleware
@@ -13,41 +15,49 @@ public class LoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        var originalBody = context.Response.Body;
-        var memoryBodyStream = new MemoryStream();
-        context.Response.Body = memoryBodyStream;
+        await LogRequestAsync(context.Request);
         
-        await LoggingRequestAsync(context.Request);
-        
-        await _next.Invoke(context);
-        
-        await LoggingResponseAsync(context.Response, memoryBodyStream);
-        
-        await memoryBodyStream.CopyToAsync(originalBody);
+        await InvokeNextAndLogResponseAsync(context);
     }
 
-    private async Task LoggingRequestAsync(HttpRequest request)
+    private async Task LogRequestAsync(HttpRequest request)
     {
         if (!_logger.IsEnabled(LogLevel.Information)) return;
 
-        var queryString = request.QueryString;
-        _logger.LogInformation("{QueryString}", queryString);
-
-        var body = await ReadBody.GetRequestBodyAsync(request);
-        if (string.IsNullOrEmpty(body)) return;
-
-        _logger.LogInformation("{Body}", body);
+        _logger.LogInformation("QueryString: {QueryString}", request.QueryString);
         
-        if (!_logger.IsEnabled(LogLevel.Debug)) return;
-        _logger.LogDebug("{Headers}", request.Headers);
+        var requestBody = await BodyReader.ReadRequestBodyAsync(request);
+        if (!string.IsNullOrEmpty(requestBody))
+        {
+            _logger.LogInformation("RequestBody: {Body}", requestBody);
+        }
+
+        if (_logger.IsEnabled(LogLevel.Debug))
+        {
+            _logger.LogDebug("RequestHeaders: {Headers}", request.Headers);
+        }
     }
 
-    private async Task LoggingResponseAsync(HttpResponse response, MemoryStream responseBodyStream)
+    private async Task InvokeNextAndLogResponseAsync(HttpContext context)
     {
-        var statusCode = response.StatusCode;
-        var body = await ReadBody.GetResponseBodyAsync(responseBodyStream);
+        var originalResponseBody = context.Response.Body;
 
-        _logger.LogInformation("{StatusCode}", statusCode);
-        _logger.LogInformation("{Body}", body);
+        using var memoryBodyStream = new MemoryStream();
+        context.Response.Body = memoryBodyStream;
+
+        await _next.Invoke(context);
+
+        LogResponse(context.Response, memoryBodyStream);
+
+        memoryBodyStream.Position = 0;
+        await memoryBodyStream.CopyToAsync(originalResponseBody);
+    }
+
+    private async void LogResponse(HttpResponse response, MemoryStream responseBodyStream)
+    {
+        _logger.LogInformation("ResponseStatusCode: {StatusCode}", response.StatusCode);
+
+        var responseBody = await BodyReader.ReadResponseBodyAsync(responseBodyStream);
+        _logger.LogInformation("ResponseBody: {Body}", responseBody);
     }
 }
