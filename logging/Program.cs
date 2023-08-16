@@ -14,8 +14,8 @@ builder.Services.AddHttpContextAccessor();
 
 var logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
-            .Enrich.With(new RemovePropertiesEnricher())
             .Enrich.FromLogContext()
+            .Enrich.With(new RemovePropertiesEnricher())
             .Enrich.WithProperty("Application", "Payment")
             .WriteTo.Console(new NsusJsonFormatter())
             .WriteTo.File(new NsusJsonFormatter(), "../logs/.log", rollingInterval: RollingInterval.Hour)

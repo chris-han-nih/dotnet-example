@@ -34,7 +34,7 @@ public class LoggingMiddleware
     {
         LogContext.PushProperty("CorrelationId", context.Request.Headers["X-Correlation-ID"].FirstOrDefault());
         LogContext.PushProperty("ClientIp", context.Connection.RemoteIpAddress?.ToString() ?? "unknown");
-        LogContext.PushProperty("RequestPath", $"{context.Request.Path}{context.Request.QueryString}");
+        LogContext.PushProperty("Path", $"{context.Request.Path}{context.Request.QueryString}");
     }
 
     private async Task LogRequestAsync(HttpRequest request)
