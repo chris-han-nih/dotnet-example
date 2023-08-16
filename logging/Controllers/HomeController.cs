@@ -22,7 +22,7 @@ public class HomeController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, "Hello");
+            return StatusCode(500, ex.ToString());
         }
     }
 
