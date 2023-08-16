@@ -11,5 +11,8 @@ public class RemovePropertiesEnricher: ILogEventEnricher
         logEvent.RemovePropertyIfPresent("MessageTemplate");
         logEvent.RemovePropertyIfPresent("Properties");
         logEvent.RemovePropertyIfPresent("EventId");
+        logEvent.RemovePropertyIfPresent("RequestId");
+        logEvent.RemovePropertyIfPresent("ConnectionId");
+        logEvent.RemovePropertyIfPresent("RequestPath");
     }
 }

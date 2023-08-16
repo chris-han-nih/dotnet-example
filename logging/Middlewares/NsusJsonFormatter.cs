@@ -1,12 +1,9 @@
 namespace logging.Middlewares;
 
-using System.Globalization;
-using System.Text.Json;
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Compact;
 using Serilog.Formatting.Json;
-using Serilog.Parsing;
 
 public sealed class NsusJsonFormatter : ITextFormatter
 {
@@ -65,7 +62,7 @@ public sealed class NsusJsonFormatter : ITextFormatter
                 // Escape first '@' by doubling
                 name = '@' + name;
             }
-
+        
             output.Write(',');
             JsonValueFormatter.WriteQuotedJsonString(name, output);
             output.Write(':');

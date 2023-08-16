@@ -1,6 +1,6 @@
-using Serilog.Events;
-
 namespace logging.Middlewares;
+
+using Serilog.Context;
 
 public class LoggingMiddleware
 {
@@ -15,16 +15,23 @@ public class LoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
+        LoggingMiddleware.PushLoggingContextProperties(context);
+
         await LogRequestAsync(context.Request);
         
         await InvokeNextAndLogResponseAsync(context);
     }
 
+    private static void PushLoggingContextProperties(HttpContext context)
+    {
+        LogContext.PushProperty("CorrelationId", context.Request.Headers["X-Correlation-ID"].FirstOrDefault());
+        LogContext.PushProperty("ClientIp", context.Connection.RemoteIpAddress?.ToString() ?? "unknown");
+        LogContext.PushProperty("RequestPath", context.Request.Path + context.Request.QueryString);
+    }
+
     private async Task LogRequestAsync(HttpRequest request)
     {
         if (!_logger.IsEnabled(LogLevel.Information)) return;
-
-        _logger.LogInformation("QueryString: {QueryString}", request.QueryString);
         
         var requestBody = await BodyReader.ReadRequestBodyAsync(request);
         if (!string.IsNullOrEmpty(requestBody))
@@ -47,13 +54,13 @@ public class LoggingMiddleware
 
         await _next.Invoke(context);
 
-        LogResponse(context.Response, memoryBodyStream);
+        await LogResponse(context.Response, memoryBodyStream);
 
         memoryBodyStream.Position = 0;
         await memoryBodyStream.CopyToAsync(originalResponseBody);
     }
 
-    private async void LogResponse(HttpResponse response, MemoryStream responseBodyStream)
+    private async Task LogResponse(HttpResponse response, MemoryStream responseBodyStream)
     {
         _logger.LogInformation("ResponseStatusCode: {StatusCode}", response.StatusCode);
 
