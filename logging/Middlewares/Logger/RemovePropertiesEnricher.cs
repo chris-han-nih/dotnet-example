@@ -1,4 +1,4 @@
-namespace logging.Middlewares;
+namespace logging.Middlewares.Logger;
 
 using Serilog.Core;
 using Serilog.Events;

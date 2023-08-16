@@ -1,4 +1,4 @@
-namespace logging.Middlewares;
+namespace logging.Middlewares.Logger;
 
 using Serilog.Context;
 
@@ -26,7 +26,7 @@ public class LoggingMiddleware
     {
         LogContext.PushProperty("CorrelationId", context.Request.Headers["X-Correlation-ID"].FirstOrDefault());
         LogContext.PushProperty("ClientIp", context.Connection.RemoteIpAddress?.ToString() ?? "unknown");
-        LogContext.PushProperty("RequestPath", context.Request.Path + context.Request.QueryString);
+        LogContext.PushProperty("RequestPath", $"{context.Request.Path}{context.Request.QueryString}");
     }
 
     private async Task LogRequestAsync(HttpRequest request)
@@ -52,7 +52,7 @@ public class LoggingMiddleware
         using var memoryBodyStream = new MemoryStream();
         context.Response.Body = memoryBodyStream;
 
-        await _next.Invoke(context);
+        await _next(context).ConfigureAwait(false);
 
         await LogResponse(context.Response, memoryBodyStream);
 
