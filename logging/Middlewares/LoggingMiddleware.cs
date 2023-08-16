@@ -97,7 +97,7 @@ public class LoggingMiddleware
     {
         if (response.StatusCode < 500) return;
 
-        var responseBody = JsonSerializer.Serialize(new { code = 500, message = "Oops something went wrong :( try again later" });
+        var responseBody = JsonSerializer.Serialize(new { code = response.StatusCode, message = "Oops something went wrong :( try again later" });
         originBody.SetLength(0);
         using var memoryStreamModified = new MemoryStream(Encoding.UTF8.GetBytes(responseBody));
         await memoryStreamModified.CopyToAsync(originBody).ConfigureAwait(false);
