@@ -1,8 +1,8 @@
-namespace logging.Middlewares.Logger;
-
 using System.Text;
 using System.Text.Json;
 using Serilog.Context;
+
+namespace logging.Middlewares;
 
 public class LoggingMiddleware
 {

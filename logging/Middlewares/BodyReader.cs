@@ -1,6 +1,6 @@
-namespace logging.Middlewares.Logger;
-
 using System.Text;
+
+namespace logging.Middlewares;
 
 internal static class BodyReader
 {

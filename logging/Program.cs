@@ -1,4 +1,4 @@
-using logging.Middlewares.Logger;
+using logging.Middlewares;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

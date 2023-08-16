@@ -1,8 +1,8 @@
-namespace logging.Middlewares.Logger;
-
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Json;
+
+namespace logging.Middlewares;
 
 public sealed class NsusJsonFormatter : ITextFormatter
 {

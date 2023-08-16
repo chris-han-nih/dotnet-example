@@ -1,7 +1,7 @@
-namespace logging.Middlewares.Logger;
-
 using Serilog.Core;
 using Serilog.Events;
+
+namespace logging.Middlewares;
 
 public class RemovePropertiesEnricher: ILogEventEnricher
 {
