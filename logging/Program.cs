@@ -1,4 +1,7 @@
 using logging.Middlewares;
+using logging.Middlewares.HttpHeader;
+using logging.Middlewares.Logger;
+using logging.Middlewares.Response;
 using Masking.Serilog;
 using Serilog;
 
@@ -44,6 +47,8 @@ app.UseAuthorization();
 // app.UserSerilogRequestLogging();
 
 app.MapControllers();
+app.UseMiddleware<HeaderMiddleware>();
 app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<ResponseMiddleware>();
 
 app.Run();

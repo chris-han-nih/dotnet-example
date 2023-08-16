@@ -11,7 +11,19 @@ public class HomeController : ControllerBase
     [HttpGet("/ok")]
     public IActionResult Index()
     {
-        return Ok("OK");
+        // return Ok("OK");
+        var a = 100;
+        var b = 0;
+
+        try
+        {
+            var c = a / b;
+            return Ok(c);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Hello");
+        }
     }
 
     [HttpGet("/no-content")]
